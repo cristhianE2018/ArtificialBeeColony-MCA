@@ -5,3 +5,6 @@ Se plantea una estructura en la cual se puedan abarcar la mayor parte de funcion
 solo indicarle al algoritmo cual se desea resolver.
 #Instancia
 Se debe instanciar la clase ABC : ABC abc = new ABC(10,-100,100)
+
+#Demostración
+![](ApiMiel-Demo.gif)
