@@ -6,5 +6,3 @@ solo indicarle al algoritmo cual se desea resolver.
 #Instancia
 Se debe instanciar la clase ABC : ABC abc = new ABC(10,-100,100)
 
-#Demostración
-![](ApiMiel-Demo.gif)
