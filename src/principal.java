@@ -18,7 +18,7 @@ public class principal {
 
             for (int i = 0; i <=tamanio-1; i++) {
                 double phi = Math.random();
-                int indexAbeja = 0; //Seleccionar abaje aleatoriamente de las soluciones
+                int indexAbeja = 0; //Seleccionar abaje aleatoriamente de las soluciones entre -1 y 1
             }
 
             //Enviar abejas exploradoras al área de búsqueda para descubrir nuevas fuentes de alimento
