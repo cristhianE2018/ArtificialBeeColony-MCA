@@ -16,17 +16,17 @@ public class FoodSource {
     }
 
     //Funcion Step
-    /*public double obtaintCantidadNectar(){
+    public double obtaintCantidadNectar(){
         double f = 0.0;
         for (int i = 0; i <=x.length-1; i++) {
             f = f + Math.pow((Math.abs(x[i] + 0.5)),2);
         }
         return f;
     }
-    */
+
 
     //Funcion Scewfel
-    public double obtaintCantidadNectar(){
+    /*public double obtaintCantidadNectar(){
         double aux=0.0;
         double sum =0.0;
         for (int i = 0; i <= x.length-1; i++) {
@@ -38,6 +38,8 @@ public class FoodSource {
         }
         return aux;
     }
+
+     */
     //Funcion rastrining
     /*public double obtaintCantidadNectar(){
         double aux=0.0;
