@@ -8,19 +8,21 @@ public class ABC {
     public int dimension;
     public int genMaxima;
     public int[] trial;
-    public static int MAX_TRIAL=3;
+    public static int MAX_TRIAL=1;
     public double[] p;
     public double fbest;
     public FoodSource mejor;
     public ABC(int tamanio,double li, double ls, int dimension,int genMaxima){
         this.tamanio = tamanio;
         this.dimension = dimension;
-        this.fuentesAlimento = new FoodSource[tamanio];
+        this.fuentesAlimento = new FoodSource[this.tamanio];
         this.li = li;
         this.ls = ls;
         this.genMaxima = genMaxima;
         this.trial = new int[tamanio];
         this.p = new double[tamanio];
+        Aleatorios.setRseed(0.5f);
+        Aleatorios.randomize();
     }
 
 
@@ -49,9 +51,8 @@ public class ABC {
         int ciclo = 0;
         while(ciclo < genMaxima){
             employedBeesPhase(); //En esta fase se ce
-            //onlookersBeesPhase();
-            //scoutBeesPhase();
-            //mostrarFoodSource();
+            onlookersBeesPhase();
+            scoutBeesPhase();
             memorizeBest();
             ciclo++;
         }
@@ -63,18 +64,19 @@ public class ABC {
     }
 
     public void employedBeesPhase(){
-        Aleatorios.setRseed(0.5f);
-        Aleatorios.randomize();
+
         double phi;
         int k;
+
         for (int i = 0; i <=fuentesAlimento.length-1; i++) {
+            do{
+                k = (int)Math.floor(Math.random()* (tamanio + 0));
+            }while (k==i);
 
             FoodSource aux;//La nueva fuente de alimento que se produce
             double[] v = new double[dimension];
             FoodSource fs = fuentesAlimento[i];
             double[] x = fs.getX();
-            k = (int)Math.floor(Math.random()* (tamanio + 0)); //100
-
             double valor;
             for (int j = 0; j <=x.length-1; j++) {   //tamanio = 200
                 phi = Aleatorios.rnd(-1,1);
@@ -88,23 +90,27 @@ public class ABC {
                 trial[i] = 0;
             }
             else{
-                trial[i]++;
+                trial[i] = trial[i] + 1;
             }
         }
 
     }
     public void setFoodSourceProbabilities(){
         double sum=0;
+        double[] fit = new double[tamanio];
+
         for (int i = 0; i <= fuentesAlimento.length-1; i++) {
-            sum = sum + fuentesAlimento[i].getValorInverso();
+            fit[i] = fuentesAlimento[i].getValorInverso();
+            sum+=fit[i];
         }
         for (int i = 0; i <=fuentesAlimento.length-1; i++) {
-            p[i] = fuentesAlimento[i].getValorInverso() / sum;
+            p[i] = fit[i] / sum;
         }
     }
 
     public void onlookersBeesPhase(){
         setFoodSourceProbabilities();
+
         int t = 0;
         int i = 0;
         double rnd;
@@ -113,14 +119,17 @@ public class ABC {
         double[] v = new double[dimension];
         double valor;
         while(t < tamanio){
-
-            rnd = Math.random();
+            rnd = Aleatorios.rndreal(0f,1f);
             if(rnd < p[i]){
+                //Inicio de movimiento
+                do{
+                    k = (int)Math.floor(Math.random()* (tamanio + 0));
+                }while (k==i);
+
                 FoodSource fs = fuentesAlimento[i];
                 double[] x = fs.getX();
-                k = (int)Math.floor(Math.random()* (tamanio + 0));
                 for (int j = 0; j <=x.length-1; j++) {
-                    phi = Aleatorios.rnd(-1.0,1.0);
+                    phi = Aleatorios.rnd(-1,1);
                     valor = x[j] + phi * (x[j] - fuentesAlimento[k].getX()[j]);
                     v[j] = valor;
                 }
@@ -130,10 +139,13 @@ public class ABC {
                     trial[i] = 0;
                 }
                 else{
-                    trial[i]++;
+                    trial[i] = trial[i]+1;
                 }
-                t++;
+                //Fin de movimiento
+
             }
+            t++;
+
             i = (i >= (tamanio-1)) ? 0 : i + 1;
         }
     }
@@ -147,7 +159,8 @@ public class ABC {
                 indice = i;
             }
         }
-        if(mayor>MAX_TRIAL){
+        if(mayor > MAX_TRIAL){
+            //Se crea una variación a la fuente de alimento
             FoodSource fs = fuentesAlimento[indice];
             FoodSource nuevo;
             double[] x = fs.getX();
@@ -158,7 +171,7 @@ public class ABC {
                 v[i] = nRnd;
             }
             nuevo = new FoodSource(v);
-            replaceFoodSource(indice,nuevo);
+            fuentesAlimento[indice] = nuevo;
         }
     }
     public void memorizeBest(){

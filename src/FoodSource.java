@@ -15,26 +15,38 @@ public class FoodSource {
         return  this.valorInverso;
     }
 
-    /*public double obtaintCantidadNectar(){
-        double res = 0.0;
-        for (int i = 0; i <=x.length-1; i++) {
-            res = res + (Math.pow(x[i],2));
-        }
-        return res;
-    }
-     */
-
-
-
-
     //Funcion Step
-    public double obtaintCantidadNectar(){
+    /*public double obtaintCantidadNectar(){
         double f = 0.0;
         for (int i = 0; i <=x.length-1; i++) {
             f = f + Math.pow((Math.abs(x[i] + 0.5)),2);
         }
         return f;
     }
+    */
+
+    //Funcion Scewfel
+    public double obtaintCantidadNectar(){
+        double aux=0.0;
+        double sum =0.0;
+        for (int i = 0; i <= x.length-1; i++) {
+            sum = 0;
+            for (int j = 0; j <=i; j++) {
+                sum = sum + x[j];
+            }
+            aux = aux + Math.pow(sum,2);
+        }
+        return aux;
+    }
+    //Funcion rastrining
+    /*public double obtaintCantidadNectar(){
+        double aux=0.0;
+        for (int i = 0; i <=x.length-1; i++) {
+            aux = aux + (Math.pow(x[i],2) - 10 * Math.cos(2 * Math.PI *  x[i]) + 10);
+        }
+        return aux;
+    }*/
+
 
     public void setCalidad(){
 
@@ -59,10 +71,10 @@ public class FoodSource {
 
     public void funcionInversa(){
         if(calidad >= 0){
-            valorInverso = 1 / (1+calidad);
+            this.valorInverso = 1 / (1+this.calidad);
         }
         else{
-            valorInverso = 1 / (Math.abs(calidad));
+            this.valorInverso = 1 / (Math.abs(this.calidad));
         }
     }
 }
